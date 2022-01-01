@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="socketTimeout">Socket Time Out</string>
+    <string name="Jsonpars">Json Parsing Error</string>
+    <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
+</resources>

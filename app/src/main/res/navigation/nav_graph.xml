@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/nav_graph"
+    app:startDestination="@id/quranFragment">
+
+    <fragment
+        android:id="@+id/quranFragment"
+        android:name="com.mabrouk.dalilmuslim.view.fragments.QuranFragment"
+        android:label="QuranFragment" >
+        <action
+            android:id="@+id/action_quranFragment_to_azqarFragment"
+            app:destination="@id/azqarFragment" />
+        <action
+            android:id="@+id/action_quranFragment_to_mawarecFragment"
+            app:destination="@id/mawarecFragment" />
+        <action
+            android:id="@+id/action_quranFragment_to_hadecFragment"
+            app:destination="@id/hadecFragment" />
+        <action
+            android:id="@+id/action_quranFragment_to_storyFragment"
+            app:destination="@id/storyFragment" />
+        <action
+            android:id="@+id/action_quranFragment_to_surahFragment"
+            app:destination="@id/surahFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/azqarFragment"
+        android:name="com.mabrouk.dalilmuslim.view.fragments.AzqarFragment"
+        android:label="AzqarFragment" >
+        <action
+            android:id="@+id/action_azqarFragment_to_hadecFragment"
+            app:destination="@id/hadecFragment" />
+        <action
+            android:id="@+id/action_azqarFragment_to_mawarecFragment"
+            app:destination="@id/mawarecFragment" />
+        <action
+            android:id="@+id/action_azqarFragment_to_storyFragment"
+            app:destination="@id/storyFragment" />
+        <action
+            android:id="@+id/action_azqarFragment_to_quranFragment"
+            app:destination="@id/quranFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/hadecFragment"
+        android:name="com.mabrouk.dalilmuslim.view.fragments.HadecFragment"
+        android:label="HadecFragment" >
+        <action
+            android:id="@+id/action_hadecFragment_to_storyFragment"
+            app:destination="@id/storyFragment" />
+        <action
+            android:id="@+id/action_hadecFragment_to_azqarFragment"
+            app:destination="@id/azqarFragment" />
+        <action
+            android:id="@+id/action_hadecFragment_to_mawarecFragment"
+            app:destination="@id/mawarecFragment" />
+        <action
+            android:id="@+id/action_hadecFragment_to_quranFragment"
+            app:destination="@id/quranFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mawarecFragment"
+        android:name="com.mabrouk.dalilmuslim.view.fragments.QuranRadioFragment"
+        android:label="MawarecFragment" >
+        <action
+            android:id="@+id/action_mawarecFragment_to_storyFragment"
+            app:destination="@id/storyFragment" />
+        <action
+            android:id="@+id/action_mawarecFragment_to_hadecFragment"
+            app:destination="@id/hadecFragment" />
+        <action
+            android:id="@+id/action_mawarecFragment_to_azqarFragment"
+            app:destination="@id/azqarFragment" />
+        <action
+            android:id="@+id/action_mawarecFragment_to_quranFragment"
+            app:destination="@id/quranFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/storyFragment"
+        android:name="com.mabrouk.dalilmuslim.view.fragments.StoryFragment"
+        android:label="storyFragment" >
+        <action
+            android:id="@+id/action_storyFragment_to_hadecFragment"
+            app:destination="@id/hadecFragment" />
+        <action
+            android:id="@+id/action_storyFragment_to_mawarecFragment"
+            app:destination="@id/mawarecFragment" />
+        <action
+            android:id="@+id/action_storyFragment_to_azqarFragment"
+            app:destination="@id/azqarFragment" />
+        <action
+            android:id="@+id/action_storyFragment_to_quranFragment"
+            app:destination="@id/quranFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/surahFragment"
+        android:name="com.mabrouk.dalilmuslim.view.fragments.SurahFragment"
+        android:label="SurahFragment" >
+        <argument
+            android:name="VERSE_DATA"
+            app:argType="com.mabrouk.data.entities.ParaceVerses" />
+        <action
+            android:id="@+id/action_surahFragment_to_tafsirFragment"
+            app:destination="@id/tafsirFragment" />
+        <action
+            android:id="@+id/action_surahFragment_to_ayaTranslateFragment"
+            app:destination="@id/ayaTranslateFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/tafsirFragment"
+        android:name="com.mabrouk.dalilmuslim.view.fragments.TafsirFragment"
+        android:label="TafsirFragment" >
+        <argument
+            android:name="AYA_TAFSIRS"
+            app:argType="com.mabrouk.data.entities.AyaTafsirs" />
+    </dialog>
+    <fragment
+        android:id="@+id/ayaTranslateFragment"
+        android:name="com.mabrouk.dalilmuslim.view.fragments.AyaTranslateFragment"
+        android:label="AyaTranslateFragment" >
+        <argument
+            android:name="AYA_TRANSLATE"
+            app:argType="com.mabrouk.data.entities.TranslationEntity" />
+    </fragment>
+</navigation>

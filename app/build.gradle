@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'com.google.gms.google-services'
+}
+apply from: '../common_build.gradle'
+
+android {
+    defaultConfig {
+        applicationId "com.mabrouk.dalilmuslim"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation project(path: ':data')
+    implementation project(path: ':domain')
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.1'
+
+    implementation 'com.github.mohamedmabrouk582:Loading:1.0.6'
+
+
+
+    //exoplayer
+    implementation "com.google.android.exoplayer:exoplayer:2.16.1"
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.16.1'
+    implementation 'com.google.android.exoplayer:exoplayer-dash:2.16.1'
+
+    //localization
+    implementation 'com.akexorcist:localization:1.2.10'
+
+    //youtube
+    implementation 'com.github.HaarigerHarald:android-youtubeExtractor:master-SNAPSHOT'
+
+    //firebase
+    implementation platform('com.google.firebase:firebase-bom:29.0.3')
+    implementation 'com.google.firebase:firebase-config:21.0.1'
+
+    //work manger
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
+    androidTestImplementation "androidx.work:work-testing:2.7.1"
+
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.23'
+    implementation 'np.com.susanthapa:curved_bottom_navigation:0.6.5'
+
+
+
+
+
+}
