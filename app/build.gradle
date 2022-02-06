@@ -16,7 +16,8 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation project(path: ':data')
     implementation project(path: ':domain')
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+    implementation 'com.google.firebase:firebase-messaging:23.0.0'
+  //  debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
     implementation 'jp.wasabeef:recyclerview-animators:4.0.1'
 
     implementation 'com.github.mohamedmabrouk582:Loading:1.0.6'

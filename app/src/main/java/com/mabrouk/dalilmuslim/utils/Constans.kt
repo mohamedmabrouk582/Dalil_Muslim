@@ -26,6 +26,7 @@ const val READERS_DOWNLOADS = "READERS_DOWNLOADS"
 const val READER_1="abdulbasit_abdulsamad_mujawwad/128"
 const val LAST_ID="LAST_ID"
 const val RADIOS_DOWNLOADS ="RADIOS_DOWNLOADS"
+const val VIDEO_KEY = "VIDEO_KEY"
  val quranReaders = {
      "AbdulBaset" to "AbdulBaset/Mujawwad/mp3/"
      "Alafasy"    to "Alafasy/mp3/"

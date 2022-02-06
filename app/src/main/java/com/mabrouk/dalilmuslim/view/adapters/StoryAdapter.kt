@@ -26,6 +26,7 @@ class StoryAdapter(val onItemClick: (item: StoryEntity, pos: Int) -> Unit) :
         RecyclerView.ViewHolder(viewBinding.root) {
         fun bind(item: StoryEntity) {
             viewBinding.story = item
+            if (item.isPlaying) viewBinding.root.performClick()
             viewBinding.root.setOnClickListener {
                 if (lastPosition != absoluteAdapterPosition) {
                     if (lastPosition != -1) {
@@ -57,4 +58,11 @@ class StoryAdapter(val onItemClick: (item: StoryEntity, pos: Int) -> Unit) :
     }
 
     override fun getItemCount(): Int = data.size
+
+    fun updateItem(key:String){
+        data.find  { it.video_key == key }?.apply {
+            isPlaying = true
+            notifyItemChanged(data.indexOf(this))
+        }
+    }
 }

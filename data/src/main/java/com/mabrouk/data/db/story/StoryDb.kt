@@ -8,7 +8,7 @@ import com.mabrouk.data.entities.StoryEntity
  * @name Mohamed Mabrouk
  * Copyrights (c) 27/08/2021 created by Just clean
  */
-@Database(entities = [StoryEntity::class], version = 2 , exportSchema = false)
+@Database(entities = [StoryEntity::class], version = 3 , exportSchema = false)
 abstract class StoryDb : RoomDatabase(){
     abstract fun getDao() : StoryDao
 }

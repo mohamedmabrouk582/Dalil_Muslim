@@ -15,6 +15,7 @@ data class StoryEntity(
     var url:String,
     var title:String,
     var getThumbUrl:String,
+    val ext : String = "mp4",
     var suraId: Int? = 0,
     var videoId:Int = 0,
     var isPlaying:Boolean = false

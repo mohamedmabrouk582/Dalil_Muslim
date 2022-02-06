@@ -8,6 +8,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequest
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import at.huber.youtubeExtractor.VideoMeta
 import at.huber.youtubeExtractor.YouTubeExtractor
 import at.huber.youtubeExtractor.YtFile
@@ -22,6 +26,8 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.common.reflect.TypeToken
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
+import com.mabrouk.dalilmuslim.utils.VIDEO_KEY
+import com.mabrouk.dalilmuslim.workManger.VideoDownloader
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -94,7 +100,8 @@ class StoriesViewModel @Inject constructor(
                         key,
                         ytFiles.get(18)?.url?:"",
                         videoMeta?.title ?: "",
-                        videoMeta?.hqImageUrl ?: ""
+                        videoMeta?.hqImageUrl ?: "",
+                        ytFiles.get(18)?.format?.ext?:"mp4"
                     )
                     _states.value = StoryStates.AddStory(story)
                 }
@@ -108,6 +115,16 @@ class StoriesViewModel @Inject constructor(
     override fun onCleared() {
         _states.value = StoryStates.Idle
         super.onCleared()
+    }
+
+    fun downloadVideo(model :StoryEntity){
+        val workManger = WorkManager.getInstance(getApplication())
+        val data = Data.Builder().putString(VIDEO_KEY,Gson().toJson(model)).build()
+        val worker = OneTimeWorkRequest.Builder(VideoDownloader::class.java)
+            .setInputData(data)
+            .build()
+        workManger.enqueue(worker)
+        _states.value = StoryStates.DownloadVideo(workManger.getWorkInfoByIdLiveData(worker.id))
     }
 
 

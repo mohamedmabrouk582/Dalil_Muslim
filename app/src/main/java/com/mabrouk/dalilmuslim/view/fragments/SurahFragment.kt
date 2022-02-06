@@ -306,11 +306,11 @@ class SurahFragment : Fragment(R.layout.sura_ayat_fragment), AyaAdapter.AyaListe
 
 
     private fun downloadVerse(workInfo: LiveData<WorkInfo>) {
-        workInfo.observe(viewLifecycleOwner, { workInfo ->
+        workInfo.observe(viewLifecycleOwner) { workInfo ->
             if (workInfo.state == WorkInfo.State.SUCCEEDED) {
                 DownloadProgressDialog.stop()
                 prepareAudios()
-                Log.d("downloadVerse","$index : ${data.size}")
+                Log.d("downloadVerse", "$index : ${data.size}")
                 if (index < data.size) {
                     viewModel.downloadVerseAudio(sura?.name_arabic!!, ArrayList(data[index]))
                     index += 1
@@ -326,7 +326,7 @@ class SurahFragment : Fragment(R.layout.sura_ayat_fragment), AyaAdapter.AyaListe
                 }
                 DownloadProgressDialog.stop()
             }
-        })
+        }
     }
 
 
