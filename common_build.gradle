@@ -12,9 +12,7 @@ android {
     defaultConfig {
         minSdkVersion 24
         targetSdkVersion 31
-        versionCode 1
         multiDexEnabled true
-        versionName "1.0"
 
         buildConfigField ('String', 'BASE_URL', Base_Url)
         buildConfigField ('String', 'API_KEY', API_KEY)
@@ -24,9 +22,6 @@ android {
         buildConfigField ('String', 'Audio_Url2', Audio_Url2)
     }
 
-    lintOptions {
-        abortOnError = false
-    }
     buildTypes {
         release {
             minifyEnabled true
@@ -59,19 +54,6 @@ android {
 //        }
 //    }
 
-    packagingOptions {
-        exclude 'META-INF/DEPENDENCIES'
-        exclude 'META-INF/LICENSE'
-        exclude 'META-INF/LICENSE.txt'
-        exclude 'META-INF/license.txt'
-        exclude 'META-INF/NOTICE'
-        exclude 'META-INF/NOTICE.txt'
-        exclude 'META-INF/notice.txt'
-        exclude 'META-INF/ASL2.0'
-        exclude 'META-INF/AL2.0'
-        exclude 'META-INF/LGPL2.1'
-        exclude("META-INF/*.kotlin_module")
-    }
 }
 
 dependencies {
@@ -104,7 +86,7 @@ dependencies {
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 
     //paging
-    implementation("androidx.paging:paging-runtime:3.1.0")
+    implementation("androidx.paging:paging-runtime:3.1.1")
 
 
     //shimmer
@@ -127,23 +109,23 @@ dependencies {
 
     // lifecycle
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
-    implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.0'
-    implementation 'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-common-java8:2.4.1'
+    implementation 'androidx.lifecycle:lifecycle-reactivestreams-ktx:2.4.1'
     implementation 'androidx.activity:activity-ktx:1.4.0'
 
     //room
-    implementation "androidx.room:room-runtime:2.4.1"
-    implementation "androidx.room:room-ktx:2.4.1"
-    kapt "androidx.room:room-compiler:2.4.1"
-    testImplementation "androidx.room:room-testing:2.4.1"
+    implementation "androidx.room:room-runtime:2.4.2"
+    implementation "androidx.room:room-ktx:2.4.2"
+    kapt "androidx.room:room-compiler:2.4.2"
+    testImplementation "androidx.room:room-testing:2.4.2"
     //  kapt "android.arch.persistence.room:compiler:1.1.1"
 
     //navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:2.4.0"
-    implementation "androidx.navigation:navigation-ui-ktx:2.4.0"
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.4.0"
-    androidTestImplementation "androidx.navigation:navigation-testing:2.4.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:2.4.1"
+    implementation "androidx.navigation:navigation-ui-ktx:2.4.1"
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:2.4.1"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.4.1"
 
     implementation 'com.facebook.stetho:stetho:1.6.0'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.6.0'
