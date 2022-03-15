@@ -21,6 +21,8 @@ import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.mabrouk.data.entities.StoryEntity
 import com.mabrouk.data.utils.FileUtils
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
@@ -29,56 +31,59 @@ import kotlinx.coroutines.flow.collect
  * Copyrights (c) 24/07/2021 created by Just clean
  */
 @AndroidEntryPoint
-class StoryFragment : Fragment(R.layout.story_fragment), Player.EventListener {
+class StoryFragment : Fragment(R.layout.story_fragment) {
     lateinit var viewBinding: StoryFragmentBinding
-    val viewModel : StoriesViewModel by viewModels()
-    var selectedItem : StoryEntity? = null
+    val viewModel: StoriesViewModel by viewModels()
+    var selectedItem: StoryEntity? = null
+    var youTubePlayer: YouTubePlayer? = null
 
-    private val player by lazy {
-        SimpleExoPlayer.Builder(viewBinding.root.context).build()
-    }
-    var playbackPosition: Long = 0
 
     val adapter by lazy {
         StoryAdapter { item, pos ->
             selectedItem = item
             viewBinding.playing = true
             viewBinding.story = item
-            player.seekTo(pos, C.TIME_UNSET)
-            player.prepare()
-            player.play()
-            if (!CheckNetwork.isOnline(requireContext())){
-                Toast.makeText(requireContext(), getString(R.string.no_internet_connection), Toast.LENGTH_SHORT).show()
+            youTubePlayer?.apply {
+                this.loadVideo(item.video_key, 0f)
+            }
+            if (!CheckNetwork.isOnline(requireContext())) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.no_internet_connection),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
+    }
+
+    private fun setVideoKey() {
+        viewBinding.playerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                this@StoryFragment.youTubePlayer = youTubePlayer
+            }
+        })
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewBinding = DataBindingUtil.bind(view)!!
-        initPlayer()
         viewBinding.videosRcv.adapter = adapter
         viewModel.loadStories()
+        lifecycle.addObserver(viewBinding.playerView)
+        setVideoKey()
         handleStates()
-
         viewBinding.downloadVideo.setOnClickListener {
             viewModel.downloadVideo(selectedItem!!)
         }
     }
 
-    private fun handleStates(){
+    private fun handleStates() {
         lifecycleScope.launchWhenStarted {
             viewModel.states.collect {
-                when(it){
-                    is StoryStates.AddStory ->{
+                when (it) {
+                    is StoryStates.AddStory -> {
                         adapter.addItem(it.storyEntity)
-                        if (FileUtils.videoIsFound(it.storyEntity)){
-                            player.addMediaItem(addMediaItem(FileUtils.getVideoPath(it.storyEntity),it.storyEntity.video_key))
-                        }else{
-                            player.addMediaItem(addMediaItem(it.storyEntity.url,it.storyEntity.video_key))
-                        }
-                        player.prepare()
                         viewBinding.loader.visibility = View.GONE
                     }
                     is StoryStates.Error -> Toast.makeText(
@@ -89,8 +94,9 @@ class StoryFragment : Fragment(R.layout.story_fragment), Player.EventListener {
                     StoryStates.Idle -> {}
                     StoryStates.ShowNotification -> {}//Notification.showNotification(requireContext(),adapter.data,player,1)
                     is StoryStates.DownloadVideo -> {
-                        it.workInfo.observe(viewLifecycleOwner){
-                            Toast.makeText(requireContext(), it.state.name, Toast.LENGTH_SHORT).show()
+                        it.workInfo.observe(viewLifecycleOwner) {
+                            Toast.makeText(requireContext(), it.state.name, Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }
@@ -98,25 +104,10 @@ class StoryFragment : Fragment(R.layout.story_fragment), Player.EventListener {
         }
     }
 
-    private fun initPlayer() {
-        viewBinding.playerView.player = player
-        player.addListener(this)
-        player.seekTo(playbackPosition)
-    }
 
     override fun onDestroy() {
-        player.pause()
         super.onDestroy()
-        playbackPosition = player.currentPosition
-        player.release()
-    }
-
-    private fun addMediaItem(path: String, id: String): MediaItem {
-        return MediaItem.Builder().setUri(Uri.parse(path)).setMediaId(id).build()
-    }
-
-    override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
-       // adapter.updateItem(mediaItem?.mediaId?:"")
+        viewBinding.playerView.release()
     }
 
 }
