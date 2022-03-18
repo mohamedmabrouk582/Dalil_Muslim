@@ -3,6 +3,7 @@ package com.mabrouk.dalilmuslim.utils
 import android.os.Build
 import android.text.Html
 import android.widget.ImageView
+import android.widget.SearchView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
@@ -40,13 +41,15 @@ class DataBindAdapterUtils {
         @JvmStatic
         @BindingAdapter("app:fromHtml")
         fun fromHtml(view: TextView, txt: String) {
-            view.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            view.text =
                 Html.fromHtml(txt, Html.FROM_HTML_MODE_COMPACT)
-            } else {
-                Html.fromHtml(txt)
-            }
-
-
         }
+
+        @JvmStatic
+        @BindingAdapter("app:searchListener")
+        fun searchListener(searchView:SearchView,listener : SearchView.OnQueryTextListener){
+            searchView.setOnQueryTextListener(listener)
+        }
+
     }
 }

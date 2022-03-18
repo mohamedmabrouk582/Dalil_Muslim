@@ -13,7 +13,7 @@
     <string name="count">العدد  :</string>
     <string name="reference">المرجع  :</string>
     <string name="no_reference_here">لايوجد مرجع هنا</string>
-    <string name="txt_search">بحث</string>
+    <string name="txt_search">بحث…</string>
     <string name="choose_readers">اختار القارئ الذي تريد</string>
 
 </resources>

@@ -8,6 +8,7 @@ import com.mabrouk.domain.repository.JuzRepository
 import com.mabrouk.domain.repository.SurasRepository
 import com.mabrouk.domain.repository.TafsirRepository
 import com.mabrouk.domain.repository.VersesRepository
+import com.mabrouk.domain.utils.Result
 import dagger.Provides
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -25,4 +26,5 @@ interface QuranDefultRepository  : SurasRepository, VersesRepository,
     suspend fun updateSura(sura: SuraEntity)
     suspend fun insertReaders(readers:ArrayList<QuranReaderEntity>)
     suspend fun updateReader(readers:QuranReaderEntity)
+    suspend fun searchBySurah(query:String) : Flow<List<SuraEntity>>
 }

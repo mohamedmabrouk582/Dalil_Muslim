@@ -25,4 +25,7 @@ interface QuranApi {
     @GET
     suspend fun getRadios(@Url url : String) : Response<RadioResponse>
 
+    @GET("search?size=20&page=1&language=ar")
+    suspend fun search(@Query("q") query:String) : Response<Any>
+
 }

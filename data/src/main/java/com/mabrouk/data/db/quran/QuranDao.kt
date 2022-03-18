@@ -65,4 +65,11 @@ interface QuranDao {
 
     @Query("select * from tafsirayaentity where verse_key=:key ")
     fun getSavedTafsir(key:String) : Flow<List<TafsirAyaEntity>>
+
+
+    @Query("select * from SuraEntity where name_arabic LIKE '%' || :search || '%' ")
+    fun searchByAtSurah(search:String) : Flow<List<SuraEntity>>
+
+
+
 }

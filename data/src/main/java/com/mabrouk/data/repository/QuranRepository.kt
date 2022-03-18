@@ -21,6 +21,9 @@ import javax.inject.Inject
 
 class QuranRepository @Inject constructor(@ApplicationContext val context: Context, val api:QuranApi, val dao: QuranDao) : QuranDefultRepository {
 
+
+
+
     override suspend fun requestSuras(): Flow<Result<SurasResponse>> =
         executeCall(context) { api.getAllSura() }
 
@@ -61,6 +64,10 @@ class QuranRepository @Inject constructor(@ApplicationContext val context: Conte
 
     override suspend fun updateReader(readers: QuranReaderEntity) {
         dao.updateReader(readers)
+    }
+
+    override suspend fun searchBySurah(query: String): Flow<List<SuraEntity>> {
+       return dao.searchByAtSurah(query)
     }
 
 }

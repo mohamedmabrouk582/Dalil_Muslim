@@ -61,6 +61,7 @@ class QuranFragment : Fragment(R.layout.quran_fragment_layout) , SuraAdapter.Sur
                 }
         }
 
+
       handleStates()
     }
 
@@ -71,6 +72,11 @@ class QuranFragment : Fragment(R.layout.quran_fragment_layout) , SuraAdapter.Sur
                     is SurahStates.Error -> error(it.error)
                     is SurahStates.RequestJuzs -> requestJuzs(it.juzs)
                     is SurahStates.RequestSurahs -> requestSuras(it.suras)
+                    is SurahStates.SearchResult -> Toast.makeText(
+                        requireContext(),
+                        it.query,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 viewModel.resetStates()
             }
@@ -95,24 +101,24 @@ class QuranFragment : Fragment(R.layout.quran_fragment_layout) , SuraAdapter.Sur
     }
 
      fun savedJuzs(juzs: LiveData<List<JuzEntity>>) {
-        juzs.observe(viewLifecycleOwner, {
-            this.juzs= ArrayList(it)
+        juzs.observe(viewLifecycleOwner) {
+            this.juzs = ArrayList(it)
             viewModel.juzsResult.postValue(ArrayList(it).toDomain())
-            if (suras.isNotEmpty()){
-                lifecycleScope.launch { dataStore.setBoolean(SURA_LIST_DOWNLOADS,true) }
-                adapter.data= mapJuz(this.juzs, suras)
+            if (suras.isNotEmpty()) {
+                lifecycleScope.launch { dataStore.setBoolean(SURA_LIST_DOWNLOADS, true) }
+                adapter.data = mapJuz(this.juzs, suras)
             }
-        })
-    }
+        }
+     }
 
      fun savedsura(suras: LiveData<List<SuraEntity>>) {
-        suras.observe(viewLifecycleOwner, {
-            this.suras=ArrayList(it)
-            if (juzs.isNotEmpty()){
-                adapter.data= mapJuz(juzs, this.suras)
+        suras.observe(viewLifecycleOwner) {
+            this.suras = ArrayList(it)
+            if (juzs.isNotEmpty()) {
+                adapter.data = mapJuz(juzs, this.suras)
             }
-        })
-    }
+        }
+     }
 
     fun error(error: String) {
         viewModel.loader.set(false)
@@ -122,12 +128,16 @@ class QuranFragment : Fragment(R.layout.quran_fragment_layout) , SuraAdapter.Sur
     override fun onJuzDownload(item: Juz_Sura,postion: Int) {
         showProgress()
         val ids=item.verse_ids.filter { verse_id -> !suras[verse_id-1].isDownload }
-        viewModel.downloadJuz(ids,requireContext()).observe(viewLifecycleOwner, {
+        viewModel.downloadJuz(ids,requireContext()).observe(viewLifecycleOwner) {
             if (it.state == WorkInfo.State.SUCCEEDED) {
                 lifecycleScope.launch {
                     item.isDownload = true
                     adapter.update(postion)
-                    ids.forEach { sura_id -> viewModel.updateSura(suras[sura_id-1].apply { isDownload = true }) }
+                    ids.forEach { sura_id ->
+                        viewModel.updateSura(suras[sura_id - 1].apply {
+                            isDownload = true
+                        })
+                    }
                     viewModel.updateJuz(JuzEntity(item.juz_num, item.juz_num, item.verse_map, true))
                     DownloadProgressDialog.stop()
                 }
@@ -135,7 +145,7 @@ class QuranFragment : Fragment(R.layout.quran_fragment_layout) , SuraAdapter.Sur
                 DownloadProgressDialog.stop()
                 //Toast.makeText(requireContext(), it.outputData.getString(DOWNLOAD_VERSES_IDS), Toast.LENGTH_SHORT).show()
             }
-        })
+        }
     }
 
     fun showProgress(){

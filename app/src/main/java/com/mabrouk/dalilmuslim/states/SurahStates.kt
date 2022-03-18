@@ -8,4 +8,5 @@ sealed class SurahStates{
     data class RequestJuzs(val juzs:ArrayList<JuzEntity>) : SurahStates()
     data class RequestSurahs(val suras:ArrayList<SuraEntity>) : SurahStates()
     data class Error(val error:String) : SurahStates()
+    data class SearchResult(val query:String) : SurahStates()
 }

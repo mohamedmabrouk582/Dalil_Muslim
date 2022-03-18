@@ -3,6 +3,7 @@ package com.mabrouk.dalilmuslim.viewModels
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -29,6 +30,8 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.gson.Gson
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -43,6 +46,7 @@ class SuraViewModel @Inject constructor(
     var juzsResult = MutableLiveData<ArrayList<Juz>>()
     private val _states = MutableStateFlow<SurahStates>(SurahStates.Idle)
     val states: StateFlow<SurahStates> = _states
+    var searchJob : Job? = null
 
     fun requestJuz() {
         viewModelScope.launch {
@@ -157,5 +161,30 @@ class SuraViewModel @Inject constructor(
 
             }
     }
+
+    val searchListener = object : SearchView.OnQueryTextListener{
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            _states.value = SurahStates.SearchResult(query?:"")
+            return false
+        }
+
+        override fun onQueryTextChange(newText: String?): Boolean {
+            searchJob?.cancel()
+            searchJob = viewModelScope.launch {
+                MutableStateFlow(newText)
+                    .debounce(400)
+                    .distinctUntilChanged()
+                    .flowOn(Dispatchers.Default)
+                    .collect {
+                        _states.value = SurahStates.SearchResult(newText?:"")
+                    }
+            }
+
+            return false
+        }
+
+    }
+
+
 
 }
