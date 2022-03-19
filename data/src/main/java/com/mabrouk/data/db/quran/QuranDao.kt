@@ -70,5 +70,4 @@ interface QuranDao {
     @Query("select * from SuraEntity where name_arabic LIKE '%' || :search || '%' ")
     fun searchByAtSurah(search:String) : Flow<List<SuraEntity>>
 
-
 }
