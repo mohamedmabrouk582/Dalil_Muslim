@@ -71,5 +71,4 @@ interface QuranDao {
     fun searchByAtSurah(search:String) : Flow<List<SuraEntity>>
 
 
-
 }

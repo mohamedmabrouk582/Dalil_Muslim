@@ -18,6 +18,7 @@ android {
     defaultConfig {
         applicationId "com.mabrouk.dalilmuslim"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.debug
     }
 }
 
